@@ -10,13 +10,15 @@ public class Jogador {
 	public Jogador() {
 		
 	}
+	
 	public int getTentativa() {
 		return tentativa;
 	}
 	public void setTentativa(int tentativa) {
 		this.tentativa = tentativa;
 	}
-	Random aleatorio = new Random();
+
+	/*Random aleatorio = new Random();
 	public String criaNome() {
 		String n = "";
         char l;
@@ -31,7 +33,7 @@ public class Jogador {
         }
         nome = n;
         return nome;
-	}
+	}*/
 	public String getNome() {
 		return nome;
 	}
