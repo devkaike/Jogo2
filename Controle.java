@@ -1,52 +1,37 @@
 import java.util.Random;
 
 public class Controle {
-	private int tentativa, interI, interF;
-	private int tam, qtdJogador, numJogadorVec;
-	
-	public Controle(int tent, int ii, int inf, int t, int qtdJ) {
-		tentativa = tent;
+	private int interI, interF, numSorteado;
+	Random r = new Random();
+	public Controle( int ii, int inf) {
+		
 		interI = ii;
-		interF = inf;
-		tam = t;
-        qtdJogador = qtdJ;
-       
+		interF = inf;  
 	}
     
-    int t[] = new int[tam];
-    int i = 0, aux;
-    public void setJogadas(int j){
-        aux = j;
-        t[i] = aux;
-        i++;
-    }
+	/*public void teste() {
+		
+	}*/
 	
-	Random r = new Random();
-	public void iniciaJogo() {
-		int n, aux = 0, numeroJogador = 0;
-        String status = "";
-		n = 7;//r.nextInt(interF)+interI;
-        for(int i = 0; i < tam; i++){
-            aux++;
-            if(t[i] == n){
-                status  = "um jogador ganhou";
-                break;
-            }
-            if(qtdJogador == aux){
-                aux = 0;
-                numeroJogador++;
-                setNumJogadorVec(numeroJogador);
-            }
+	public boolean iniciaJogo(int tenta, int i) {
+		if(i == 0) {
+			numSorteado = r.nextInt((interF-interI+1))+interI;
+		}
+        if(tenta == getNumSorteado()) {
+        	return true;
+        }else {
+        	return false;
         }
 	}
-	public int getTentativa() {
-		return tentativa;
-	}
+	
+	
 
-	public void setTentativa(int tentativa) {
-		this.tentativa = tentativa;
+	public int getNumSorteado() {
+		return numSorteado;
 	}
-
+	public void setNumSorteado(int numSorteado) {
+		this.numSorteado = numSorteado;
+	}
 	public int getInterI() {
 		return interI;
 	}
@@ -62,10 +47,5 @@ public class Controle {
 	public void setInterFinal(int interF) {
 		this.interF = interF;
 	}
-    public int getNumJogadorVec(){
-        return numJogadorVec;
-    }
-    public void setNumJogadorVec(int njv){
-        this.numJogadorVec = njv;
-    }
+    
 }
