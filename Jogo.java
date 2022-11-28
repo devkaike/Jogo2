@@ -1,74 +1,88 @@
 import java.util.Scanner;
 
+import javax.swing.JOptionPane;
+
 public class Jogo {
 	public static void main(String[] args) {
 		Scanner dado = new Scanner(System.in);
-		int qtdJogador, interInicial, interFinal, tentativa;
-		System.out.print("informe a quantidade de jogadores > 3: ");
+		int qtdJogador = 0, interInicial = 0, interFinal = 0, tentativa = 0;
+		//System.out.print("informe a quantidade de jogadores > 3: ");
 		do {
-			qtdJogador = dado.nextInt();
+			try{
+				String s = JOptionPane.showInputDialog(null, "informe a quantidade de jogadores > 3:", "entrada de dados", 1);
+				qtdJogador = Integer.valueOf(s);
+			}catch(Exception e){
+				JOptionPane.showMessageDialog(null, "Erro!", "entrada de dados", 1);
+			}
+			
 		}while(qtdJogador < 3);
-		System.out.print("informe o intervalo inicial e o final >= 50: ");
+		//System.out.print("informe o intervalo inicial e o final >= 50: ");
 		do {
-			interInicial = dado.nextInt();
-			interFinal = dado.nextInt();
+			try{
+				String s = JOptionPane.showInputDialog(null, "informe o intervalo inicial:", "entrada de dados", 1);
+				interInicial = Integer.valueOf(s);
+				s = JOptionPane.showInputDialog(null, "informe o intervalo final:", "entrada de dados", 1);
+				interFinal = Integer.valueOf(s);
+			}catch(Exception e){
+				JOptionPane.showMessageDialog(null, "Erro!", "entrada de dados", 1);
+			}
+			
 		}while(interInicial > interFinal && (interInicial - interFinal) < 50);
-		System.out.print("informe a quantidade de tentativas > 1 <= 4: ");
+		//System.out.print("informe a quantidade de tentativas > 1 <= 4: ");
 		do {
-			tentativa = dado.nextInt();
+			try{
+				String s = JOptionPane.showInputDialog(null, "informe a quantidade de tentativas > 1 <= 4", "entrada de dados", 1);
+				tentativa = Integer.valueOf(s);
+			}catch(Exception e){
+				JOptionPane.showMessageDialog(null, "Erro!", "entrada de dados", 1);
+			}
+			
 		}while(tentativa < 1 || tentativa > 4);
 		
 		//int tentativas[] = new int[qtdJogador];
 		Jogador j = new Jogador();
-		int t;
 		Jogador tentativas[] = new Jogador[qtdJogador];
 		int qtdTent[] = new int[(tentativa * qtdJogador)];
 		String nome;
-		int aux;
 	    Controle c = new Controle(interInicial, interFinal);
+		int salva = 0;
 		for(int i = 0; i < qtdJogador; i++) {
-			System.out.println("informe seu nome jogador "+(i+1));
-			dado.nextLine();
-			String nomeAux = dado.nextLine();
-			j.setNome(nomeAux);
-			System.out.print("jogador "+j.getNome()+", faça sua jogada: ");
-			aux = i;
+			String nomeAux = "";
+			try{
+				String s = JOptionPane.showInputDialog(null,"informe seu nome jogador "+(i+1) , "entrada de dados", 1);
+				nomeAux = s;
+			}catch(Exception e){
+				JOptionPane.showMessageDialog(null, "Erro!", "entrada de dados", 1);
+			}
 			
+			j.setNome(nomeAux);
+			int tent =0;
 			for(int x = 0; x < tentativa; x++) {
-				
-				if(i != 0) {
-					qtdTent[aux] = dado.nextInt();
-					aux++;
-				}else {
-					qtdTent[aux] = dado.nextInt();
-					aux++;
-				}
-				
-				
+				do{
+					try{
+						String s = JOptionPane.showInputDialog(null, "jogador "+j.getNome()+", faça sua jogada", "entrada de dados", 1);
+						tent = Integer.valueOf(s);
+					}catch(Exception e){
+						JOptionPane.showMessageDialog(null, "Erro!", "entrada de dados", 1);
+					}
+					
+				}while(tent < interInicial || tent > interFinal);
+				qtdTent[salva] = tent;
+				salva++;
 			}
 			
 			nome = j.getNome();
 			Jogador obj = new Jogador(nome);
 			tentativas[i] = obj;
 		}
+		String somaString = "";
+		salva = 0;
 		for(int i = 0; i < qtdJogador; i++) {
-			
-			System.out.print("\nJogador: "+tentativas[i].getNome());
-			aux = i;
-			
+			somaString += "\nJogador: "+tentativas[i].getNome();
 			for(int x = 0; x < tentativa; x++) {
-				
-				if(i != 0) {
-					System.out.println();
-					System.out.print("Tentativas "+(x+1)+": "+qtdTent[aux]);
-					aux++;
-				}else {
-					System.out.println();
-					System.out.print("Tentativas "+(x+1)+": "+qtdTent[aux]);
-					aux++;
-				}
-				
-				
+				somaString += "\n";
+				somaString += "Tentativas "+(x+1)+": "+qtdTent[salva];
+				salva++;
 			}
 		}
 		
@@ -83,16 +97,20 @@ public class Jogo {
 			}
 			
 			if(c.iniciaJogo(qtdTent[i], i)) {
-				status = "um jogador ganhou";
+				somaString += "\num jogador ganhou";
 				break;
 			}
 			
 		}
         if(i == (qtdJogador * tentativa)) {
-        	System.out.print("\n nimguem acertou"+"\n Numero da sorte: "+c.getNumSorteado());
+        	somaString += "\n nimguem acertou"+"\n Numero da sorte: "+c.getNumSorteado();
         }else {
-        	System.out.println("\n"+status+ "  "+tentativas[nomeP].getNome()+" "+c.getNumSorteado() );
+        	somaString += "\n"+status+ "  "+tentativas[nomeP].getNome()+" "+c.getNumSorteado();
         }
-        
+		try{
+			JOptionPane.showMessageDialog(null, somaString, "entrada de dados", 1);
+		}catch(Exception e){
+			JOptionPane.showMessageDialog(null, "Erro!", "saida de dados", 1);
+		}
 	}
 }
