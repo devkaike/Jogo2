@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import javax.swing.JOptionPane;
@@ -6,7 +7,9 @@ public class Jogo {
 	public static void main(String[] args) {
 		Scanner dado = new Scanner(System.in);
 		int qtdJogador = 0, interInicial = 0, interFinal = 0, tentativa = 0;
-		//System.out.print("informe a quantidade de jogadores > 3: ");
+		
+		ArrayList < Jogador > lista = new  ArrayList <>();
+		ArrayList < Integer > lista1 = new  ArrayList <>();
 		do {
 			try{
 				String s = JOptionPane.showInputDialog(null, "informe a quantidade de jogadores > 3:", "entrada de dados", 1);
@@ -16,7 +19,7 @@ public class Jogo {
 			}
 			
 		}while(qtdJogador < 3);
-		//System.out.print("informe o intervalo inicial e o final >= 50: ");
+		
 		do {
 			try{
 				String s = JOptionPane.showInputDialog(null, "informe o intervalo inicial:", "entrada de dados", 1);
@@ -28,7 +31,7 @@ public class Jogo {
 			}
 			
 		}while(interInicial > interFinal && (interInicial - interFinal) < 50);
-		//System.out.print("informe a quantidade de tentativas > 1 <= 4: ");
+		
 		do {
 			try{
 				String s = JOptionPane.showInputDialog(null, "informe a quantidade de tentativas > 1 <= 4", "entrada de dados", 1);
@@ -39,10 +42,6 @@ public class Jogo {
 			
 		}while(tentativa < 1 || tentativa > 4);
 		
-		//int tentativas[] = new int[qtdJogador];
-		Jogador j = new Jogador();
-		Jogador tentativas[] = new Jogador[qtdJogador];
-		int qtdTent[] = new int[(tentativa * qtdJogador)];
 		String nome;
 	    Controle c = new Controle(interInicial, interFinal);
 		int salva = 0;
@@ -51,11 +50,14 @@ public class Jogo {
 			try{
 				String s = JOptionPane.showInputDialog(null,"informe seu nome jogador "+(i+1) , "entrada de dados", 1);
 				nomeAux = s;
+				
 			}catch(Exception e){
 				JOptionPane.showMessageDialog(null, "Erro!", "entrada de dados", 1);
 			}
-			
+			Jogador j = new Jogador();
 			j.setNome(nomeAux);
+			lista.add(j);
+			
 			int tent =0;
 			for(int x = 0; x < tentativa; x++) {
 				do{
@@ -67,21 +69,22 @@ public class Jogo {
 					}
 					
 				}while(tent < interInicial || tent > interFinal);
-				qtdTent[salva] = tent;
+				
+				lista1.add(tent);
 				salva++;
 			}
-			
-			nome = j.getNome();
+			Jogador jogador = new Jogador(nomeAux, lista1);
+			/*nome = j.getNome();
 			Jogador obj = new Jogador(nome);
-			tentativas[i] = obj;
+			tentativas[i] = obj;*/
 		}
 		String somaString = "";
 		salva = 0;
 		for(int i = 0; i < qtdJogador; i++) {
-			somaString += "\nJogador: "+tentativas[i].getNome();
+			somaString += "\nJogador: "+lista.get(i).getNome();
 			for(int x = 0; x < tentativa; x++) {
 				somaString += "\n";
-				somaString += "Tentativas "+(x+1)+": "+qtdTent[salva];
+				somaString += "       Tentativas "+(x+1)+": "+ lista1.get(salva)/*qtdTent[salva]*/;
 				salva++;
 			}
 		}
@@ -89,14 +92,14 @@ public class Jogo {
 		String status = "";
 		int x= 0, nomeP = 0;
 		int i = 0;
+		int aux;
 		for(;i < (qtdJogador * tentativa) ; i++, x++) {
 			
 			if(x == qtdJogador) {
 				nomeP++;
 				x = 0;
 			}
-			
-			if(c.iniciaJogo(qtdTent[i], i)) {
+			if(c.iniciaJogo(lista1.get(i), i)) {
 				somaString += "\num jogador ganhou";
 				break;
 			}
@@ -105,7 +108,7 @@ public class Jogo {
         if(i == (qtdJogador * tentativa)) {
         	somaString += "\n nimguem acertou"+"\n Numero da sorte: "+c.getNumSorteado();
         }else {
-        	somaString += "\n"+status+ "  "+tentativas[nomeP].getNome()+" "+c.getNumSorteado();
+        	somaString += "\n"+status+ "  "+lista.get(nomeP).getNome()+" "+c.getNumSorteado();
         }
 		try{
 			JOptionPane.showMessageDialog(null, somaString, "entrada de dados", 1);
