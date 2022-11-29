@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Controle {
@@ -13,11 +14,11 @@ public class Controle {
 		
 	}*/
 	
-	public boolean iniciaJogo(int tenta, int i) {
+	public boolean iniciaJogo(Integer tentativas, int i) {
 		if(i == 0) {
 			numSorteado = r.nextInt((interF-interI+1))+interI;
 		}
-        if(tenta == getNumSorteado()) {
+        if(tentativas == getNumSorteado()) {
         	return true;
         }else {
         	return false;
